@@ -4,6 +4,8 @@
 #include <mutex>
 #include <thread>
 
+const long g_loop_count = 10000000;
+
 std::mutex _mux;
 int i = 0;
 int j = 0;
@@ -41,10 +43,10 @@ void b()
 }
 
 S no_sync;
+int g_counter = 0;
 void c()
 {
-	int test = 0;
-	test = test * 23;
+	g_counter++;
 	no_sync.doSomething();
 }
 
@@ -53,27 +55,27 @@ int main(void)
 	std::thread thr1([]() {
 		std::chrono::high_resolution_clock clock;
 		auto t1 = clock.now();
-		for (int i = 0;i < 1000000;i++) {
+		for (int i = 0;i < g_loop_count;i++) {
 			a();
 		}
 		auto diff1 = clock.now() - t1;
-		std::cout << "mutex:" << diff1.count() << std::endl;
+		std::cout << "mutex: " << diff1.count() << std::endl;
 	});
 
 	std::thread thr2([]() {
 		std::chrono::high_resolution_clock clock;
 		auto t1 = clock.now();
-		for (int i = 0;i < 1000000;i++) {
+		for (int i = 0;i < g_loop_count;i++) {
 			a();
 		}
 		auto diff1 = clock.now() - t1;
-		std::cout << "mutex:" << diff1.count() << std::endl;
+		std::cout << "mutex: " << diff1.count() << std::endl;
 	});
 
 	std::thread thr3([]() {
 		std::chrono::high_resolution_clock clock;
 		auto t2 = clock.now();
-		for (int i = 0;i < 1000000;i++) {
+		for (int i = 0;i < g_loop_count;i++) {
 			b();
 		}
 		auto diff2 = clock.now() - t2;
@@ -83,7 +85,7 @@ int main(void)
 	std::thread thr4([]() {
 		std::chrono::high_resolution_clock clock;
 		auto t2 = clock.now();
-		for (int i = 0;i < 1000000;i++) {
+		for (int i = 0;i < g_loop_count;i++) {
 			b();
 		}
 		auto diff2 = clock.now() - t2;
@@ -91,23 +93,15 @@ int main(void)
 	});
 
 	std::thread thr5([]() {
-		std::chrono::high_resolution_clock clock;
-		auto t3 = clock.now();
-		for (int i = 0;i < 1000000;i++) {
+		for (int i = 0;i < g_loop_count;i++) {
 			c();
 		}
-		auto diff3 = clock.now() - t3;
-		std::cout << "no_sync:" << diff3.count() << std::endl;
 	});
 
 	std::thread thr6([]() {
-		std::chrono::high_resolution_clock clock;
-		auto t3 = clock.now();
-		for (int i = 0;i < 1000000;i++) {
+		for (int i = 0;i < g_loop_count;i++) {
 			c();
 		}
-		auto diff3 = clock.now() - t3;
-		std::cout << "no_sync:" << diff3.count() << std::endl;
 	});
 
 	thr1.join();
@@ -123,5 +117,6 @@ int main(void)
 	std::cout << "atomic:\t" << "tmp.k:" << tmp.k << "\ttmp.l:" << tmp.l << std::endl;
 	
 	std::cout << "no_syn:\t" << "no_sync.k:" << no_sync.k << "\tno_sync.l:" << no_sync.l << std::endl;
+	std::cout << "g_counter:\t" << g_counter << std::endl;
 	return 0;
 }
