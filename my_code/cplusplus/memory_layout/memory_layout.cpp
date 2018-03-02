@@ -38,8 +38,8 @@ int main(int argc,char** argv)
 		fun();
 	}
 
-	
-	cout<<"[1]:bval "<<(long)pvtab[1]<<endl;
+	int * pval = (int*)(pvtab + 1);
+	cout<<"[1]:bval "<<pval[0]<<endl;
 	
 	derived d(10, 100);
 	pvtab = (FUN**)&d;
@@ -51,7 +51,7 @@ int main(int argc,char** argv)
 		fun();
 	}
 
-	int * pval = (int*)(pvtab+1);
+	pval = (int*)(pvtab+1);
 	cout<<"[1]:bval "<<pval[0]<<endl;
 	cout<<"[2]:dval "<<pval[1]<<endl;
 
