@@ -39,6 +39,10 @@ class derived_multi: public base, public base_1
 		virtual void derived_multi_h(){cout << "derived_multi::h()" << endl;}
 };
 
+class empty_class {
+	//empty_class (const empty_class &) = default;
+};
+
 typedef void (*FUN)();
 
 int main(int argc,char** argv)
@@ -51,6 +55,7 @@ int main(int argc,char** argv)
 	base b(100);
 	FUN **pvtab = (FUN**)&b;
 	cout<<"[0]:base->vptr:" << pvtab <<endl;
+
 
 	for(int i=0; i<2; i++)
 	{
@@ -111,6 +116,13 @@ int main(int argc,char** argv)
 	}
 	pval = (int*)(pvtab+1);
 	cout<<"[3]:base_1::bval_1 "<<pval[0]<<endl;
+
+	// empty class
+	empty_class e;
+	empty_class e2 = e;
+	cout << "empty class object size:" << sizeof(e) << endl;
+	empty_class array[10];
+	cout << "empty class objects array size:" << sizeof(array) << endl;
 
 	return 0;
 }
