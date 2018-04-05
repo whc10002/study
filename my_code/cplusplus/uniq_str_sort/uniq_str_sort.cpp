@@ -31,7 +31,6 @@ int main(int argc, char * argv[])
 {
 	vector< unique_ptr<Node> > v_datas;
 
-
 	v_datas.emplace_back(unique_ptr<Node>(new Node(1.1)));
 	v_datas.emplace_back(unique_ptr<Node>(new Node(2.1)));
 	v_datas.emplace_back(unique_ptr<Node>(new Node(2.0)));
@@ -68,4 +67,13 @@ int main(int argc, char * argv[])
 			cout << "NULL" << endl;
 		}
 	}
+
+	srand(2);
+	cout << "first:2:" << float(rand())/RAND_MAX << endl;
+	srand(1);
+	cout << "first:1:" << float(rand())/RAND_MAX << endl;
+	srand(123456);
+	cout << "first:123456:" << float(rand())/RAND_MAX << endl;
+	srand(100000000);
+	cout << "first:100000000:" << float(rand())/RAND_MAX << endl;
 }
