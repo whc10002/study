@@ -2,7 +2,8 @@
 #include <map>
 #include <cstddef>
 
-void *mmap_start = (void*)(0x100900000000);
+void *g_mmap_start = (void*)(0x100A01000000);
+long g_mmap_size  = (10*1024*1024);
 size_t offset = 1024;
 
 template <typename _Tp>
@@ -35,7 +36,7 @@ public:
  	
 	pointer allocate(size_t num, const void *hint = 0)
 	{
- 		long returnvalue = (long)mmap_start + offset;
+ 		long returnvalue = (long)g_mmap_start + offset;
  		size_t increment = num * sizeof(_Tp) + 8;
 		increment -= increment % 8;
  		offset += increment;
@@ -44,10 +45,10 @@ public:
 
 	void deallocate(pointer __p, size_type __n)
  	{
-		if ((void *)0x90200000UL < static_cast<void *>(__p) && static_cast<void *>(__p) < (void *)0xD03000000UL)
-		{
-			return;
-		}
+		//if ((void *)0x90200000UL < static_cast<void *>(__p) && static_cast<void *>(__p) < (void *)0xD03000000UL)
+		//{
+		//	return;
+		//}
 		::operator delete(__p);
 	}
 
