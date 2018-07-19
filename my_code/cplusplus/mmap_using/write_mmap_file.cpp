@@ -24,6 +24,8 @@ int main(int argc, char*argv[])
 	mmapstring key("key");
 	mmapstring value("value");
 	
+	mmapstring key1("key1");
+	mmapstring value1("value1");
 	if(fd < 1)
 	{
 		printf("Open failed.\n");
@@ -32,7 +34,9 @@ int main(int argc, char*argv[])
 
 	auto map = new(mapping)mmapmap();
 	(*map)[key] = value;
+	(*map)[key1] = value1;
 	printf("Sizeof map: %ld.\n", (long)map->size());
 	printf("Value of 'key': %s\n", (*map)[key].c_str());
+	printf("Value of 'key1': %s\n", (*map)[key1].c_str());
 	return 0;
 }
