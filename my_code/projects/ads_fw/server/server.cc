@@ -1,7 +1,7 @@
 // -*- C++ -*-
 // =============================================================================
 /**
- *	Copyright (c) Freewheel, 2007-2009. All rights reserved.
+ *	Copyright (c) , 2018-2025. All rights reserved.
  *
  *	@file
  *
@@ -17,6 +17,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -26,10 +27,6 @@ int main(int argc, char**argv)
 	
 	int retval = 0;
 	bool run_as_server = false;
-
-	//instantiate singletons
-	(void)Ads_Log_Service::instance();
-	(void)Ads_Pusher_Service::instance();
 
 	evthread_use_pthreads();
 	
