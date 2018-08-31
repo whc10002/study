@@ -2,6 +2,7 @@
 #include <string>
 #include <map>
 #include <iostream>
+#include <climits>
 
 int g_old_reduce = 3500;
 typedef struct Tax_Rate
@@ -80,7 +81,7 @@ int calculate_tax_quick(int income, const Tax_Rate* tax_rate, int count, int red
 
 int usage(int argc, char**argv)
 {
-	if (argc < 3)
+	if (argc < 4)
 	{
 		std::cout << "tax_cap {before_tax_income} {cal_method} {tax ratio}(1:ratio step; 2:quick calculation)" << std::endl;
 		std::cout << "cal_method: 1:ratio step; 2:quick calculation" << std::endl;
@@ -134,7 +135,7 @@ int main(int argc, char**argv)
 		}
 		std::cout << "Your taxable income:" << input << std::endl;
 		std::cout << "Your tax shoule be:" << tax << std::endl;
-		std::cout << "Your Post tax revenue" << input - tax << std::endl;
+		std::cout << "Your Post tax revenue:" << input - tax << std::endl;
 	}
 	return 0;
 }
