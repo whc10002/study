@@ -43,18 +43,21 @@ int calculate_tax_step(int income, const Tax_Rate* tax_rate, int count, int redu
 	int tax = 0;
 	if (income <= reduce)
 		return tax;
-	int current = income - reduce;
+	int tax_part = income - reduce;
 	for (int i = 0; i < count; i++)
 	{
-		if (current <= tax_rate[i].end)
+		if (tax_part <= tax_rate[i].end)
 		{
+			int current = tax_part - tax_rate[i].begin;
+			std::cout << "ratio:" << tax_rate[i].ratio << " current:" << current << " tax:" << current * tax_rate[i].ratio << std::endl; 
 			tax += current * tax_rate[i].ratio;
 			break;
 		}
 		else
 		{
-			tax += tax_rate[i].ratio * tax_rate[i].end;
-			current -= tax_rate[i].end;
+			int current = tax_rate[i].end - tax_rate[i].begin;
+			std::cout << "ratio:" << tax_rate[i].ratio << " current:" << current << " tax:" << current * tax_rate[i].ratio << std::endl; 
+			tax += tax_rate[i].ratio * current;
 		}
 
 	}
