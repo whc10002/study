@@ -12,6 +12,8 @@ void waits()
 {
 	std::unique_lock<std::mutex> lk(cv_m);
 	std::cout << "Waiting... \n";
+
+	// when wait is invocated, the the mutex lock will be released untill wait return.
 	cv.wait(lk, []{return i == 1;});
 	std::cout << "...finished waiting. i == 1\n";
 	done = true;
@@ -30,8 +32,11 @@ void signals()
 	while (!done) 
 	{
 		std::cout << "Notifying true change...\n";
+
+		// Before notify_one, we should unlock the mutex, othervise the wait can't lock when wait returned.
 		lk.unlock();
-		cv.notify_one(); // waiting thread is notified with i == 1, cv.wait returns
+		// waiting thread is notified with i == 1, cv.wait returns
+		cv.notify_one();
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		lk.lock();
 	}
