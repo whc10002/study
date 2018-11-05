@@ -1,2 +1,2 @@
 #!/bin/sh
-g++ -std=c++11 -O3 -g -o main *.cpp
+g++ -O3 -g -o main *.cpp -pthread -std=c++11
