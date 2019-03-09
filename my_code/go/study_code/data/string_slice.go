@@ -1,8 +1,8 @@
 package main
 
-//import "reflect"
-//import "fmt"
-//import "unsafe"
+import "reflect"
+import "fmt"
+import "unsafe"
 
 func main() {
 	s := "abcdef"
