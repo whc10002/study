@@ -4,7 +4,7 @@
 #include <iostream>
 #include <climits>
 
-int g_old_reduce = 3500;
+int g_old_reduce = 5000;
 typedef struct Tax_Rate
 {
 	int begin;
@@ -24,7 +24,7 @@ Tax_Rate g_old_tax_rate[] =
 	{80000, INT_MAX, 0.45, 13505}	
 };
 
-int g_new_reduce = 5000;
+int g_new_reduce = 9000;
 Tax_Rate g_new_tax_rate[] = 
 {
 	{0, 3000, 0.03, 0},

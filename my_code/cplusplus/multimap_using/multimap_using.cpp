@@ -53,6 +53,9 @@ int main(int argc, char* argv[])
 	{
 		std::cout << (*it).first << ":" << (*it).second << std::endl;
 	}
+	iterPair = myMultiMap.equal_range("Navy");
+	if (iterPair.first == iterPair.second)
+		std::cout << "Here" << std::endl;
 
 	// 删除所有key为"Bob"的键值对
 	myMultiMap.erase("Bob");
