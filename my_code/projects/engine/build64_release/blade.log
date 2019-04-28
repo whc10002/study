@@ -1,0 +1,14 @@
+Blade(info): loading BUILDs...
+Blade(info): loading done.
+Blade(info): analyzing dependency graph...
+Blade(info): analyzing done.
+Blade(info): generating build rules...
+Blade(info): CPP=cpp
+Blade(info): CC=gcc
+Blade(info): CXX=g++
+Blade(info): LD=g++
+Blade(warning): Unsupported C/C++ flags: -Werror=format-nonliteral
+Blade(info): generating done.
+Blade(info): tunes the parallel jobs number(-j N) to be 8
+Blade(error): building failure
+Blade(info): cost time is 0:00:02s
