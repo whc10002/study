@@ -38,7 +38,8 @@ string check_and_correct_invalid_url(const string & url)
 std::pair<std::string, std::string> lookup_group_label(const std::string& type)
 {
 	static std::map<std::string, std::pair<std::string, std::string>> group_label_map {
-		{"full-stack", std::make_pair("group", "label")}
+		{"a", std::make_pair("group", "label")},
+		{"b", {"title", "tag"}}
 	};
 }
 
