@@ -1,2 +1,2 @@
 #!/bin/sh
-g++ string_substr.cpp -g -o main 
+g++ -std=c++11 string_substr.cpp -g -o main 

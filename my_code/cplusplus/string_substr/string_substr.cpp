@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <string.h>
+#include <map>
 
 using namespace std;
 
@@ -34,6 +35,13 @@ string check_and_correct_invalid_url(const string & url)
 	return result;
 }
 
+std::pair<std::string, std::string> lookup_group_label(const std::string& type)
+{
+	static std::map<std::string, std::pair<std::string, std::string>> group_label_map {
+		{"full-stack", std::make_pair("group", "label")}
+	};
+}
+
 int main(int argc, char *argv[])
 {
 	string url = "http://www.baidu.com?a=2";
@@ -51,4 +59,22 @@ int main(int argc, char *argv[])
 	url = "www.baidu.com/?a=2";
 	cout << check_and_correct_invalid_url(url) << endl;
 	
+	typedef std::pair<std::string,std::string> pair;
+
+	std::map<pair,int> map =
+	{
+		{ std::make_pair("C++", "C++14"), 2014 },
+		{ std::make_pair("C++", "C++17"), 2017 },
+		{ std::make_pair("Java", "Java 7"), 2011 },
+		{ std::make_pair("Java", "Java 8"), 2014 },
+		{ std::make_pair("C", "C11"), 2011 }
+	};
+
+	for (const auto &entry: map)
+	{
+		auto key_pair = entry.first;
+		std::cout << "{" << key_pair.first << "," << key_pair.second << "}, "
+				  << entry.second << '\n';
+	}
+	return 0;
 }
