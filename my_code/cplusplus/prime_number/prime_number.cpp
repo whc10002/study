@@ -36,4 +36,13 @@ int main(int argc, char* argv[])
 		
 	get_prime_str(1006, ss);
 	cout << ss.str().substr(1000, 5) << endl;
+
+	double a = 7.990999;
+	int b = a*1000000;
+	cout << b << endl;
+
+	int c = a*1000;
+	cout << c << endl;
+
+	cout << b/1000 << "  :  " << c << endl;
 }
