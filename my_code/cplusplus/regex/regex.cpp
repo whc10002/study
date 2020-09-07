@@ -2,7 +2,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
- 
+#include <map>
+
 int test_regex_match()
 {
 	std::string pattern{ "\\d{3}-\\d{8}|\\d{4}-\\d{7}" }; // fixed telephone
@@ -106,18 +107,68 @@ int test_regex_replace2()
 	return 0;
 }
 
+int replace_str(const std::string src, std::string &result)
+{
+	result = src.c_str();
+        static const std::string prefix = "${";
+        static const std::string suffix = "}";
+        static const std::string gdpr_consent_prefix = "${GDPR_CONSENT_";
+        size_t pre_pos = src.find(prefix);
+        if (pre_pos == std::string::npos)
+                return 0;
+
+        const std::map<std::string, std::string> macros = {
+                {"${US_PRIVACY}", "#{US_PRIVACY}"},
+                {"${GDPR}", "#{GDPR}"},
+                {"${GDPR_CONSENT}", "#{GDPR_CONSENT}"}
+        };
+        while (pre_pos != std::string::npos)
+        {
+                size_t found = result.find(suffix, pre_pos);
+                if (found == std::string::npos)
+                        break;
+                std::string pre_part = result.substr(0, pre_pos);
+                std::string name = result.substr(pre_pos, found);
+                std::string left_part = result.substr(found + suffix.length());
+
+                if (name.empty())
+                        break;
+                const auto it = macros.find(name);
+                if (it != macros.end())
+                        name = it->second;
+                else
+                {
+                        size_t pos = name.find(gdpr_consent_prefix);
+                        if (pos != std::string::npos)
+                        {
+                                std::string num_part = name.substr(pos + gdpr_consent_prefix.length(), name.length()-1);
+                                if (num_part.empty())
+                                        break;
+                                name = "#{GDPR_CONSENT_285}";
+                        }
+                }
+                result = pre_part + name + left_part;
+                pre_pos = result.find(prefix, found);
+        }
+	return 0;
+}
 
 int main(int argc, char* argv[])
 {
 	std::regex e("\\$\\{GDPR_CONSENT_\\d+\\}");
-	std::string name = "http://www.baidu.com/para?nihao=2&gdpr=${GDPR_CONSENT_123}&test=test";
-	std::cout << std::regex_replace(name.c_str(), e, "${GDPR_CONSENT}") << std::endl;
+	std::string name = "http://www.baidu.com/para?nihao=2&gdpr=${GDPR_CONSENT_123}&hi=${GDPR_CONSENT}&test=test";
+	// std::cout << std::regex_replace(name.c_str(), e, "${GDPR_CONSENT}") << std::endl;
 	std::cout << name << std::endl;
-	test_regex_match();
-	test_regex_search();
-	test_regex_search2();
-	test_regex_replace();
-	test_regex_replace2();
+		
+	std::string result;
+	replace_str(name, result);
+	std::cout << result << std::endl;
+
+	//test_regex_match();
+	//test_regex_search();
+	//test_regex_search2();
+	//test_regex_replace();
+	//test_regex_replace2();
 
 	return 0;
 }
