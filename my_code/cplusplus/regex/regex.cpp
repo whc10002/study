@@ -4,6 +4,7 @@
 #include <iostream>
 #include <map>
 
+/*
 int test_regex_match()
 {
 	std::string pattern{ "\\d{3}-\\d{8}|\\d{4}-\\d{7}" }; // fixed telephone
@@ -11,10 +12,6 @@ int test_regex_match()
  
 	std::vector<std::string> str{ "010-12345678", "0319-9876543", "021-123456789"};
  
-	/* std::regex_match:
-		判断一个正则表达式(参数re)是否匹配整个字符序列str,它主要用于验证文本
-		注意，这个正则表达式必须匹配被分析串的全部，否则返回false;如果整个序列被成功匹配，返回true
-	*/
  
 	for (auto tmp : str) {
 		bool ret = std::regex_match(tmp, re);
@@ -33,10 +30,6 @@ int test_regex_search()
 	std::vector<std::string> str{ "http://blog.csdn.net/fengbingchun", "https://github.com/fengbingchun",
 		"abcd://124.456", "abcd https://github.com/fengbingchun 123" };
  
-	/* std::regex_search:
-		类似于regex_match,但它不要求整个字符序列完全匹配
-		可以用regex_search来查找输入中的一个子序列，该子序列匹配正则表达式re
-	*/
  
 	for (auto tmp : str) {
 		bool ret = std::regex_search(tmp, re);
@@ -73,10 +66,6 @@ int test_regex_replace()
 		"abcdefbg", "12345678901234567X" };
 	std::string fmt{ "********" };
  
-	/* std::regex_replace:
-		在整个字符序列中查找正则表达式re的所有匹配
-		这个算法每次成功匹配后，就根据参数fmt对匹配字符串进行替换
-	*/
  
 	for (auto tmp : str) {
 		std::string ret = std::regex_replace(tmp, re, fmt);
@@ -106,7 +95,7 @@ int test_regex_replace2()
  
 	return 0;
 }
-
+*/
 int replace_str(const std::string src, std::string &result)
 {
 	result = src.c_str();
@@ -128,9 +117,10 @@ int replace_str(const std::string src, std::string &result)
                 if (found == std::string::npos)
                         break;
                 std::string pre_part = result.substr(0, pre_pos);
-                std::string name = result.substr(pre_pos, found);
+                std::string name = result.substr(pre_pos, found - pre_pos + 1);
                 std::string left_part = result.substr(found + suffix.length());
 
+		std::cout << "pre_part:" << pre_part << " name:" << name << " left_part:" << left_part << std::endl;
                 if (name.empty())
                         break;
                 const auto it = macros.find(name);
@@ -141,7 +131,8 @@ int replace_str(const std::string src, std::string &result)
                         size_t pos = name.find(gdpr_consent_prefix);
                         if (pos != std::string::npos)
                         {
-                                std::string num_part = name.substr(pos + gdpr_consent_prefix.length(), name.length()-1);
+                                std::string num_part = name.substr(pos + gdpr_consent_prefix.length());
+				num_part = num_part.substr(0, num_part.length() - 1);
                                 if (num_part.empty())
                                         break;
                                 name = "#{GDPR_CONSENT_285}";
@@ -155,8 +146,7 @@ int replace_str(const std::string src, std::string &result)
 
 int main(int argc, char* argv[])
 {
-	std::regex e("\\$\\{GDPR_CONSENT_\\d+\\}");
-	std::string name = "http://www.baidu.com/para?nihao=2&gdpr=${GDPR_CONSENT_123}&hi=${GDPR_CONSENT}&test=test";
+	std::string name = "http://www.baidu.com/para?nihao=2&gdpr=${GDPR_CONSENT_123}&hi=${GDPR_CONSENT}&test=test${GDPR_)}$${US_PRIVACY}";
 	// std::cout << std::regex_replace(name.c_str(), e, "${GDPR_CONSENT}") << std::endl;
 	std::cout << name << std::endl;
 		
