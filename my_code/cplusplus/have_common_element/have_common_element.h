@@ -10,16 +10,47 @@ struct common_inserter : public std::iterator<std::output_iterator_tag, void, vo
 {
 	common_inserter& operator*() { return *this; }
 	common_inserter& operator++() { return *this; }
-	common_inserter& operator = (const typename Container::value_type& value)
+	common_inserter& operator = (const typename Container::value_type &value)
 	{
 		throw true;
 	}
 	common_inserter(const Container &res) {}
 };
 
+template <typename T>
+struct Functional_Inserter : public std::iterator<std::output_iterator_tag, void, void, void, void>
+{
+	Functional_Inserter& operator*() { return *this; }
+	Functional_Inserter& operator++() { return *this; }
+	Functional_Inserter& operator = (const T& item)
+	{
+		insert_func_(item);
+		return *this;
+	}
+
+	template<typename F> Functional_Inserter(const F& f) : insert_func_(f) {}
+	std::function<void(const T&)> insert_func_;
+};
+
+template<typename Set1, typename Set2>
+bool set_is_intersected(const Set1& s1, const Set2& s2)
+{
+	typedef typename Set1::value_type Value_Type;
+	try {
+		std::set_intersection(s1.begin(), s1.end(), s2.begin(), s2.end(),
+				Functional_Inserter<Value_Type>(
+					[&](const Value_Type&) { throw true; }
+				));
+	} catch (bool res) {
+		return res;
+	}
+	return false;
+}
+
 template <class Container>
 bool have_common_element(const Container &a, const Container &b)
 {
+	typedef typename Container::value_type Value_Type;
 	try{
 		Container res;
 		std::set_intersection(a.begin(), a.end(),
