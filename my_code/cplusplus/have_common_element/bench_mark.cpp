@@ -58,6 +58,11 @@ BENCHMARK(BM_WithException_1);
 
 // Register the function as a benchmark
 BENCHMARK(BM_WithReturn);
+
+
+BENCHMARK(BM_WithException)->Iterations(100000);
+BENCHMARK(BM_WithException_1)->Iterations(100000);
+BENCHMARK(BM_WithReturn)->Iterations(100000);
 // Run the benchmark
 BENCHMARK_MAIN();
 
