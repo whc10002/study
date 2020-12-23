@@ -2,67 +2,87 @@
 #include <set>
 #include "have_common_element.h"
 
-void WithException()
+void have_common_element_my()
 {
 	std::set<int> a{1, 4, 5, 6};
 	std::set<int> b{4, 5, 6, 7, 8};
 
-        have_common_element<std::set<int>>(a, b);
+        have_common_element_my<std::set<int>>(a, b);
 }
 
-void WithReturn()
+void have_common_element_return_value()
 {
 	std::set<int> a{1, 4, 5, 6};
 	std::set<int> b{4, 5, 6, 7, 8};
 	have_common_element<std::set<int>::iterator, std::set<int>::iterator>(a.begin(), a.end(), b.begin(), b.end());
 }
 
-void WithException_1()
+void have_common_element_hash()
+{
+	std::set<int> a{1, 4, 5, 6};
+	std::set<int> b{4, 5, 6, 7, 8};
+	have_common_element_hash<std::set<int>>(a, b);
+}
+
+void set_is_intersected()
 {
 	std::set<int> a{1, 4, 5, 6};
 	std::set<int> b{4, 5, 6, 7, 8};
 	set_is_intersected(a, b);
 }
 
-static void BM_WithException(benchmark::State& state) {
+static void BM_have_common_element_my(benchmark::State& state) {
 	// Perform setup here
 	for (auto _ : state)
 	{
 		// This code gets timed
-		WithException();
+		have_common_element_my();
 	}
 }
 
-static void BM_WithException_1(benchmark::State& state) {
+static void BM_set_is_intersected(benchmark::State& state) {
 	// Perform setup here
 	for (auto _ : state)
 	{
 		// This code gets timed
-		WithException_1();
+		set_is_intersected();
 	}
 }
 
-static void BM_WithReturn(benchmark::State& state) {
+static void BM_have_common_element_return_value(benchmark::State& state) {
 	// Perform setup here
 	for (auto _ : state)
 	{
 		// This code gets timed
-		WithReturn();
+		have_common_element_return_value();
 	}
 }
-// Register the function as a benchmark
-BENCHMARK(BM_WithException);
+
+static void BM_have_common_element_hash(benchmark::State& state) {
+	// Perform setup here
+	for (auto _ : state)
+	{
+		// This code gets timed
+		have_common_element_hash();
+	}
+}
 
 // Register the function as a benchmark
-BENCHMARK(BM_WithException_1);
+BENCHMARK(BM_have_common_element_my);
 
 // Register the function as a benchmark
-BENCHMARK(BM_WithReturn);
+BENCHMARK(BM_set_is_intersected);
 
+// Register the function as a benchmark
+BENCHMARK(BM_have_common_element_return_value);
 
-BENCHMARK(BM_WithException)->Iterations(100000);
-BENCHMARK(BM_WithException_1)->Iterations(100000);
-BENCHMARK(BM_WithReturn)->Iterations(100000);
+// Register the function as a benchmark
+BENCHMARK(BM_have_common_element_hash);
+
+BENCHMARK(BM_have_common_element_my)->Iterations(100000);
+BENCHMARK(BM_set_is_intersected)->Iterations(100000);
+BENCHMARK(BM_have_common_element_return_value)->Iterations(100000);
+BENCHMARK(BM_have_common_element_hash)->Iterations(100000);
 // Run the benchmark
 BENCHMARK_MAIN();
 
